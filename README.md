@@ -2,8 +2,6 @@
 
 Software to control rover, developed for ground station.
 
-Packages description:
-
     # rover_keyboard_teleop  
 
     control of rover/model with keyboard:
