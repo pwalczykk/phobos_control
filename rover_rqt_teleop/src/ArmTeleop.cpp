@@ -30,7 +30,7 @@ void ArmTeleop::PublishAll()
     }
 }
 
-void ArmTeleop::Callback(rover_simulation::ArmTeleopConfig &config, uint32_t level)
+void ArmTeleop::Callback(rover_rqt_teleop::ArmTeleopConfig &config, uint32_t level)
 {
     double joint_temp[JOINTS_NUM];
 

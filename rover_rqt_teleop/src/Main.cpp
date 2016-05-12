@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "gazebo_sim_controller");
+    ros::init(argc, argv, "rover_rqt_teleop");
 
     ArmTeleop arm_telop;
 

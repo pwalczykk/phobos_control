@@ -5,7 +5,7 @@
 
 #include <ros/ros.h>
 #include <dynamic_reconfigure/server.h>
-#include <rover_teleop/ArmTeleopConfig.h>
+#include <rover_rqt_teleop/ArmTeleopConfig.h>
 
 class ArmTeleop
 {
@@ -14,15 +14,15 @@ class ArmTeleop
 
     ArmJointsPublisher arm_joints_publisher;
 
-    dynamic_reconfigure::Server<rover_simulation::ArmTeleopConfig> server;
-    dynamic_reconfigure::Server<rover_simulation::ArmTeleopConfig>::CallbackType f;
+    dynamic_reconfigure::Server<rover_rqt_teleop::ArmTeleopConfig> server;
+    dynamic_reconfigure::Server<rover_rqt_teleop::ArmTeleopConfig>::CallbackType f;
 public:
     ArmTeleop();
     ~ArmTeleop();
 
     void PublishAll();
-    
-    void Callback(rover_simulation::ArmTeleopConfig &config, uint32_t level);
+
+    void Callback(rover_rqt_teleop::ArmTeleopConfig &config, uint32_t level);
 };
 
 #endif
