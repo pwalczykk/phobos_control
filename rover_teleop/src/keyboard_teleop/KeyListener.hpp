@@ -4,9 +4,6 @@
 #include <ros/ros.h>
 #include <keyboard/Key.h>
 
-extern void KeyUpCallback();
-extern void KeyDownCallback();
-
 class KeyListener{
     int key_number;
 
