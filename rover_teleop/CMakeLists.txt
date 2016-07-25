@@ -25,12 +25,9 @@ catkin_package(
     CATKIN_DEPENDS message_runtime
 )
 
-# add_executable(keyboard_teleop
-#     src/keyboard_teleop/src/Main.cpp
-#     src/keyboard_teleop/src/KeyListener.cpp
-#     src/keyboard_teleop/src/PublisherFloat64.cpp
-#     src/keyboard_teleop/src/PublisherTwist.cpp)
-# target_link_libraries(keyboard_teleop ${catkin_LIBRARIES})
+add_executable(keyboard_teleop
+    src/keyboard_teleop/Main.cpp)
+target_link_libraries(keyboard_teleop ${catkin_LIBRARIES})
 
 add_executable(keyboard_teleop_old
     src/keyboard_teleop_old/src/Main.cpp

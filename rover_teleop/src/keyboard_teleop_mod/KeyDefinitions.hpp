@@ -13,7 +13,7 @@
 #define R 114
 #define F 102
 
-// #define T 116
+#define T 116
 #define G 103
 
 #define Y 121
@@ -37,18 +37,5 @@
 #define N7 263
 #define N8 264
 #define N9 265
-
-#define V_LINK0 1
-#define V_LINK1 1
-#define V_LINK2 1
-#define V_LINK3 1
-#define V_LINK4 1
-
-#define V_LINEAR1 4
-#define V_LINEAR2 3
-#define V_ANGULAR1 6
-#define V_ANGULAR2 4
-
-#define V_GRIP 1
 
 #endif
