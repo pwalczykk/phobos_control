@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package>
-  <name>rover_teleop</name>
+  <name>rover_control_launch</name>
   <version>0.0.0</version>
-  <description>The rover_keyboard_teleop package</description>
+  <description>The rover_control_launch package</description>
 
-  <!-- One maintainer tag required, multiple allowed, one person per tag -->
+  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="pwalczykk@todo.todo">pwalczykk</maintainer>
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/rover_keyboard_teleop</url> -->
+  <!-- <url type="website">http://wiki.ros.org/rover_control_launch</url> -->
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->
@@ -40,9 +40,7 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>message_generation</build_depend>
-  <run_depend>message_generation</run_depend>
-  <run_depend>message_runtime</run_depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
