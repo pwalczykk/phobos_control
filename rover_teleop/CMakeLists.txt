@@ -26,12 +26,16 @@ catkin_package(
 )
 
 add_executable(keyboard_teleop
-    src/keyboard_teleop/Main.cpp)
+    src/keyboard_teleop/src/Main.cpp
+    src/keyboard_teleop/src/KeyListener.cpp
+    src/keyboard_teleop/src/PublisherFloat64.cpp
+    src/keyboard_teleop/src/PublisherTwist.cpp)
 target_link_libraries(keyboard_teleop ${catkin_LIBRARIES})
 
-add_executable(keyboard_teleop_old
-    src/keyboard_teleop_old/src/Main.cpp
-    src/keyboard_teleop_old/src/KeyListener.cpp
-    src/keyboard_teleop_old/src/PublisherFloat64.cpp
-    src/keyboard_teleop_old/src/PublisherTwist.cpp)
-target_link_libraries(keyboard_teleop_old ${catkin_LIBRARIES})
+add_executable(uart_433_control_transmiter
+    src/uart_433_control_transmiter/Main.cpp)
+target_link_libraries(uart_433_control_transmiter ${catkin_LIBRARIES})
+
+add_executable(uart_433_control_reciver
+    src/uart_433_control_reciver/Main.cpp)
+target_link_libraries(uart_433_control_reciver ${catkin_LIBRARIES})
