@@ -32,5 +32,6 @@ int main(int argc, char **argv){
         }
         loop_rate.sleep();
     }
+    rx.Close();
     return 0;
 }

@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv){
 
-    ros::init(argc, argv, "keyboard_teleop");
+    ros::init(argc, argv, "uart_433_control_trasnmiter");
     ros::NodeHandle nh;
 
     Status __status;
@@ -34,6 +34,7 @@ int main(int argc, char** argv){
         loop_rate.sleep();
     }
 
+    tx.Close();
     free(word);
     return 0;
 }

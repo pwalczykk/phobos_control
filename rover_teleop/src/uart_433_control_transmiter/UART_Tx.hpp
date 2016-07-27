@@ -59,6 +59,11 @@ public:
         return control_sum;
     }
 
+    void Close(){
+        close(uart0_filestream);
+        printf("'Closing uart'");
+    }
+
 };
 
 #endif

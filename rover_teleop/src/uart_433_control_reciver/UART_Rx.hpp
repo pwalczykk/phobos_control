@@ -25,7 +25,7 @@ public:
     UART_Rx(const char* device_addres){
         // Open UART device
         uart0_filestream = -1;
-        uart0_filestream = open(device_addres, O_RDONLY | O_NOCTTY);
+        uart0_filestream = open(device_addres, O_RDONLY | O_NOCTTY | O_NDELAY);
         if(uart0_filestream == -1){
             printf("ERROR - Unable to acces UART\n");
         }
@@ -75,6 +75,11 @@ public:
             printf("Calculated: %d    Recived: %d\n", control_sum, rx_buffer[7]);
             return false;
         }
+    }
+
+    void Close(){
+        close(uart0_filestream);
+        printf("'Closing uart'");
     }
 };
 
