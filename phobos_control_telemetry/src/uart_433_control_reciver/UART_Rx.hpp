@@ -10,19 +10,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BUFF_SIZE 8   // 7 - data, 1 - control
-
+template <typename FrameType>
 class UART_Rx{
 private:
     int uart0_filestream;
     struct termios options;
 protected:
     int rx_length;
+    int data_num;
 public:
-    int32_t rx_buffer[BUFF_SIZE];
+    FrameType WORD;
 
 public:
-    UART_Rx(const char* device_addres){
+    UART_Rx(const char* device_addres, const int data_num){
+        this->data_num = data_num;
         // Open UART device
         uart0_filestream = -1;
         uart0_filestream = open(device_addres, O_RDONLY | O_NOCTTY | O_NDELAY);
@@ -32,6 +33,7 @@ public:
 
         // UART device settings
         tcgetattr(uart0_filestream, &options);
+        options.c_cc[VMIN] = 1;
         options.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
         options.c_iflag = IGNPAR;
         options.c_oflag = 0;
@@ -45,7 +47,7 @@ public:
     }
 
     bool ReadBuffer(){
-        rx_length = read(uart0_filestream, (void*)rx_buffer, (BUFF_SIZE)*sizeof(int32_t));
+        rx_length = read(uart0_filestream, (void*)&WORD, sizeof(WORD));
 
         if(rx_length == 0){
             return false;
@@ -63,23 +65,18 @@ public:
     bool CheckControlSum(){
         int32_t control_sum = 0;
 
-        // Control sum calculated as sum of all word elements
-        for(int i = 0; i < BUFF_SIZE-1; i++){
-            control_sum += rx_buffer[i];
+        // Control sum calculated as sum of all WORD's data elements
+        for(int i = 0; i < data_num; i++){
+            control_sum += *(WORD.begin + i);
         }
 
-        if(control_sum == rx_buffer[7]){
+        if(control_sum == WORD.control_sum){
             return true;
         }else{
             printf("WRONG CONTROL SUM!!!\n");
-            printf("Calculated: %d    Recived: %d\n", control_sum, rx_buffer[7]);
+            printf("Calculated: %d    Recived: %d\n", control_sum, WORD.control_sum);
             return false;
         }
-    }
-
-    void Close(){
-        close(uart0_filestream);
-        printf("'Closing uart'");
     }
 };
 
