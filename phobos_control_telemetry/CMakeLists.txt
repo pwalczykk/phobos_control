@@ -7,6 +7,8 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
 )
 
+catkin_package()
+
 add_executable(uart_433_control_reciver
     src/uart_433_control_reciver/Main.cpp)
 target_link_libraries(uart_433_control_reciver ${catkin_LIBRARIES})
