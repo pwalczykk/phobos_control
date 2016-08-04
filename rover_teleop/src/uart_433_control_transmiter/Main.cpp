@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv){
 
-    ros::init(argc, argv, "uart_433_control_trasnmiter");
+    ros::init(argc, argv, "uart_433_control_transmiter");
     ros::NodeHandle nh;
 
     Status __status;
