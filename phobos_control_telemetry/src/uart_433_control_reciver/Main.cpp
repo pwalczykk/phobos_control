@@ -19,7 +19,8 @@ int main(int argc, char **argv){
     ros::Rate loop_rate(10);
 
     while(ros::ok()){
-        if(rx.ReadBuffer()){
+        // if(rx.ReadBuffer()){
+        if(rx.ReadBufferAsString()){
             if(rx.CheckControlSum()){
 
                 pose_orient.msg_pose.header.seq++;
