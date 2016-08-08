@@ -21,14 +21,18 @@ int main(int argc, char **argv){
     while(ros::ok()){
         if(rx.ReadBuffer()){
             if(rx.CheckControlSum()){
-                pose_orient.msg_pose.position.x = rx.WORD.position_x;
-                pose_orient.msg_pose.position.y = rx.WORD.position_y;
-                pose_orient.msg_pose.position.z = rx.WORD.position_z;
 
-                pose_orient.msg_pose.orientation.x = rx.WORD.orientation_x;
-                pose_orient.msg_pose.orientation.y = rx.WORD.orientation_y;
-                pose_orient.msg_pose.orientation.z = rx.WORD.orientation_z;
-                pose_orient.msg_pose.orientation.w = rx.WORD.orientation_w;
+                pose_orient.msg_pose.header.seq++;
+                pose_orient.msg_pose.header.stamp = ros::Time::now();
+
+                pose_orient.msg_pose.pose.position.x = rx.WORD.position_x;
+                pose_orient.msg_pose.pose.position.y = rx.WORD.position_y;
+                pose_orient.msg_pose.pose.position.z = rx.WORD.position_z;
+
+                pose_orient.msg_pose.pose.orientation.x = rx.WORD.orientation_x;
+                pose_orient.msg_pose.pose.orientation.y = rx.WORD.orientation_y;
+                pose_orient.msg_pose.pose.orientation.z = rx.WORD.orientation_z;
+                pose_orient.msg_pose.pose.orientation.w = rx.WORD.orientation_w;
 
                 pose_orient.Publish();
 

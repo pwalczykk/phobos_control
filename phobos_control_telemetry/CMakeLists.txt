@@ -12,3 +12,7 @@ catkin_package()
 add_executable(uart_433_control_reciver
     src/uart_433_control_reciver/Main.cpp)
 target_link_libraries(uart_433_control_reciver ${catkin_LIBRARIES})
+
+add_executable(pub_traveled_path
+    src/pub_traveled_path/Main.cpp)
+target_link_libraries(pub_traveled_path ${catkin_LIBRARIES})
