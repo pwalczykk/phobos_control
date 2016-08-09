@@ -14,7 +14,7 @@ int main(int argc, char** argv){
 
     Status __status;
 
-    UART_Tx <FrameTeleoperation>tx("/dev/ttyACM0", TELEOPERATION_DATA_NUM);
+    UART_Tx <FrameTeleoperation>tx("/dev/ttyACM0", TELEOPERATION_DATA_NUM, TELEOPERATION_BUFFOR_SIZE);
 
     SubKey sub_key(&nh, &__status);
     // SubJoy sub_joy(&nh, &__status);
