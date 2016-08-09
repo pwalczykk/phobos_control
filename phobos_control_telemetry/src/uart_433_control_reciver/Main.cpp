@@ -10,7 +10,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "uart_433_control_reciver");
     ros::NodeHandle nh;
 
-    UART_Rx <FrameTelemetry>rx("/dev/ttyACM0",TELEMETRY_DATA_NUM);
+    UART_Rx <FrameTelemetry>rx("/dev/ttyACM0",TELEMETRY_DATA_NUM, TELEMETRY_BUFFOR_SIZE);
 
     PubPoseOrient pose_orient(&nh, "/control/localization/pose_ekf");
     PubJointsState joints_state(&nh, "/control/encoders/joints_state");
@@ -20,7 +20,7 @@ int main(int argc, char **argv){
 
     while(ros::ok()){
         // if(rx.ReadBuffer()){
-        if(rx.ReadBufferAsString()){
+        if(rx.ReadBufferAsChar()){
             if(rx.CheckControlSum()){
 
                 pose_orient.msg_pose.header.seq++;
