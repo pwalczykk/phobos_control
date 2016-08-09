@@ -60,7 +60,7 @@ int main(int argc, char **argv){
 
                 int error_code = rx.WORD.error_code;
             }
-            for(int i = 0; i < TELEMETRY_DATA_NUM; i++){ printf("%d ", *(rx.WORD.begin + i));}   printf("\n");
+            // for(int i = 0; i < TELEMETRY_DATA_NUM; i++){ printf("%d ", *(rx.WORD.begin + i));}   printf("\n");
         }
         loop_rate.sleep();
     }
