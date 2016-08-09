@@ -32,7 +32,7 @@ int main(int argc, char** argv){
         tx.WORD.control_mode = 0;
         tx.WORD.control_sum = tx.ControlSum();
         // tx.Transmit();
-        tx.TransmitAsChar();
+        tx.TransmitAsChar64();
         // ROS_INFO("TX: %d %d %d %d %d %d %d %d %d", *(tx.WORD.begin+0), *(tx.WORD.begin+1), *(tx.WORD.begin+2), *(tx.WORD.begin+3), *(tx.WORD.begin+4), *(tx.WORD.begin+5), *(tx.WORD.begin+6), *(tx.WORD.begin+7), *(tx.WORD.begin+8));
         loop_rate.sleep();
     }

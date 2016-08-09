@@ -20,7 +20,7 @@ int main(int argc, char **argv){
 
     while(ros::ok()){
         // if(rx.ReadBuffer()){
-        if(rx.ReadBufferAsChar()){
+        if(rx.ReadBufferAsChar64()){
             if(rx.CheckControlSum()){
 
                 pose_orient.msg_pose.header.seq++;
