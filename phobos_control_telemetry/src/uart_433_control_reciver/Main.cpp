@@ -16,7 +16,7 @@ int main(int argc, char **argv){
     PubJointsState joints_state(&nh, "/control/encoders/joints_state");
 
 
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(5);
 
     while(ros::ok()){
         // if(rx.ReadBuffer()){

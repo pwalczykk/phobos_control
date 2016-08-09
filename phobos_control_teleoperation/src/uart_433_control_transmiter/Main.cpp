@@ -19,7 +19,7 @@ int main(int argc, char** argv){
     SubKey sub_key(&nh, &__status);
     // SubJoy sub_joy(&nh, &__status);
 
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(5);
     while(ros::ok()){ros::spinOnce();
         tx.WORD.wheels_left = __status.wheels_left;
         tx.WORD.wheels_right = __status.wheels_right;
