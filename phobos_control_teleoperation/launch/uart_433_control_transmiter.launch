@@ -1,0 +1,3 @@
+<launch>
+    <node name="uart_433_control_transmiter" pkg="phobos_control_teleoperation" type="uart_433_control_transmiter" output="screen" respawn="true"/>
+</launch>
