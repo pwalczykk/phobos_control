@@ -15,8 +15,10 @@ int main(int argc, char **argv){
     PubPoseOrient pose_orient(&nh, "/control/localization/pose_ekf");
     PubJointsState joints_state(&nh, "/control/encoders/joints_state");
 
+    int UART_SYNCHRO = 0;
 
     ros::Rate loop_rate(5);
+    ros::Rate synchro_rate(21);
 
     while(ros::ok()){
         // if(rx.ReadBuffer()){
@@ -59,10 +61,15 @@ int main(int argc, char **argv){
                 joints_state.Publish();
 
                 int error_code = rx.WORD.error_code;
+
+                UART_SYNCHRO = 1;
             }
-            // for(int i = 0; i < TELEMETRY_DATA_NUM; i++){ printf("%d ", *(rx.WORD.begin + i));}   printf("\n");
         }
-        loop_rate.sleep();
+        if(UART_SYNCHRO == 1){
+            loop_rate.sleep();
+        }else{
+            synchro_rate.sleep();
+        }
     }
     return 0;
 }
