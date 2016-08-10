@@ -6,9 +6,15 @@
 #include "PubJointsState.hpp"
 
 int main(int argc, char **argv){
+    int BASIC_RATE;
+    int SYNCHRO_RATE;
 
     ros::init(argc, argv, "uart_433_control_reciver");
     ros::NodeHandle nh;
+
+    nh.param("basic_rate", BASIC_RATE, 5);
+    nh.param("basic_rate", SYNCHRO_RATE, 21);
+
 
     UART_Rx <FrameTelemetry>rx("/dev/ttyACM0",TELEMETRY_DATA_NUM, TELEMETRY_BUFFOR_SIZE);
 
@@ -19,8 +25,8 @@ int main(int argc, char **argv){
     int ERROR_COUNTER = 0;
     int MAX_ERROR_NUM = 21;
 
-    ros::Rate loop_rate(5);
-    ros::Rate synchro_rate(21);
+    ros::Rate loop_rate(BASIC_RATE);
+    ros::Rate synchro_rate(SYNCHRO_RATE);
 
     while(ros::ok()){
         // if(rx.ReadBuffer()){

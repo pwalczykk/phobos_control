@@ -8,9 +8,12 @@
 #include "KeyDefinitions.hpp"
 
 int main(int argc, char** argv){
+    int BASIC_RATE;
 
     ros::init(argc, argv, "uart_433_control_transmiter");
     ros::NodeHandle nh;
+
+    nh.param("basic_rate", BASIC_RATE, 5);
 
     Status __status;
 
@@ -19,7 +22,8 @@ int main(int argc, char** argv){
     SubKey sub_key(&nh, &__status);
     // SubJoy sub_joy(&nh, &__status);
 
-    ros::Rate loop_rate(5);
+    ros::Rate loop_rate(BASIC_RATE);
+    
     while(ros::ok()){ros::spinOnce();
         tx.WORD.wheels_left = __status.wheels_left;
         tx.WORD.wheels_right = __status.wheels_right;
