@@ -16,6 +16,8 @@ int main(int argc, char **argv){
     PubJointsState joints_state(&nh, "/control/encoders/joints_state");
 
     int UART_SYNCHRO = 0;
+    int ERROR_COUNTER = 0;
+    int MAX_ERROR_NUM = 21;
 
     ros::Rate loop_rate(5);
     ros::Rate synchro_rate(21);
@@ -63,8 +65,18 @@ int main(int argc, char **argv){
                 int error_code = rx.WORD.error_code;
 
                 UART_SYNCHRO = 1;
+                ERROR_COUNTER = 0;
+            }else{
+                ERROR_COUNTER++;
             }
+        }else{
+            ERROR_COUNTER++;
         }
+
+        if(ERROR_COUNTER > MAX_ERROR_NUM){
+            exit(-1);
+        }
+
         if(UART_SYNCHRO == 1){
             loop_rate.sleep();
         }else{
