@@ -1,7 +1,13 @@
 <launch>
     <node name="keyboard" pkg="keyboard" type="keyboard"/>
-    <node name="uart_433_control_transmiter" pkg="phobos_control_teleoperation" type="uart_433_control_transmiter" output="screen" respawn="true"/>
+    <node name="uart_433_control_transmiter" pkg="phobos_control_teleoperation" type="uart_433_control_transmiter" output="screen" respawn="true">
+        <param name="basic_rate" value="10"/>
+    </node>
 
-    <node name="uart_433_control_reciver" pkg="phobos_control_telemetry" type="uart_433_control_reciver" output="screen" respawn="true"/>
+    <node name="uart_433_control_reciver" pkg="phobos_control_telemetry" type="uart_433_control_reciver" output="screen" respawn="true">
+        <param name="basic_rate" value="10"/>
+        <param name="synchro_rate" value="12"/>
+    </node>
+
 
 </launch>
