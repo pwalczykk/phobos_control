@@ -18,8 +18,8 @@ public:
     SubKey(ros::NodeHandle *nh, Status *__status){
         this->nh = nh;
         this->__status = __status;
-        sub_key_down = nh->subscribe("/keyboard/keydown", 100, &SubKey::CallbackDown, this);
-        sub_key_up = nh->subscribe("/keyboard/keyup", 100, &SubKey::CallbackUp, this);
+        sub_key_down = nh->subscribe("/control/keyboard/keydown", 100, &SubKey::CallbackDown, this);
+        sub_key_up = nh->subscribe("/control/keyboard/keyup", 100, &SubKey::CallbackUp, this);
     }
 
     ~SubKey(){}

@@ -16,9 +16,9 @@ struct Status{
     int16_t grip_force;
 
     Status(){
-        wheels_left = 0; wheels_right = 0;
-        link_0 = 0; link_1 = 0; link_2 = 0; link_3 = 0; link_4 = 0;
-        grip_force = 0;
+        wheels_left = V_ZERO; wheels_right = V_ZERO;
+        link_0 = V_ZERO; link_1 = V_ZERO; link_2 = V_ZERO; link_3 = V_ZERO; link_4 = V_ZERO;
+        grip_force = V_ZERO;
     }
 
     void VelLink0(int16_t link_0){    this->link_0 = link_0;}
@@ -29,46 +29,46 @@ struct Status{
 
     void VelGripper(int16_t grip_force){   this->grip_force = grip_force;}
 
-    void VelWheels(int16_t linear_vel, int16_t angular_vel){
-        this->wheels_left = linear_vel + angular_vel;
-        this->wheels_right = linear_vel - angular_vel;
+    void VelWheels(int16_t wheels_left, int16_t wheels_right){
+        this->wheels_left = wheels_left;
+        this->wheels_right = wheels_right;
     }
 
     void KeyDownCallback(int16_t key)
     {
         switch(key)
         {
-            case Q: VelLink0(V_LINK0); break;
-            case A: VelLink0(-V_LINK0); break;
+            case Q: VelLink0(V_POS); break;
+            case A: VelLink0(V_NEG); break;
 
-            case W: VelLink1(V_LINK1); break;
-            case S: VelLink1(-V_LINK1); break;
+            case W: VelLink1(V_POS); break;
+            case S: VelLink1(V_NEG); break;
 
-            case E: VelLink2(V_LINK2); break;
-            case D: VelLink2(-V_LINK2); break;
+            case E: VelLink2(V_POS); break;
+            case D: VelLink2(V_NEG); break;
 
-            case R: VelLink3(V_LINK3); break;
-            case F: VelLink3(-V_LINK3); break;
+            case R: VelLink3(V_POS); break;
+            case F: VelLink3(V_NEG); break;
 
             // case T: VelLink4(V_LINK4); break;
-            case 116: VelLink4(V_LINK4); break;
-            case G: VelLink4(-V_LINK4); break;
+            case 116: VelLink4(V_POS); break;
+            case G: VelLink4(V_NEG); break;
 
-            case Y: VelGripper(V_GRIP); break;
-            case H: VelGripper(-V_GRIP); break;
+            case Y: VelGripper(V_POS); break;
+            case H: VelGripper(V_NEG); break;
 
-            case U: VelGripper(V_GRIP); break;
-            case J: VelGripper(0); break;
+            case U: VelGripper(V_POS); break;
+            case J: VelGripper(V_ZERO); break;
 
-            case N1: VelWheels(-V_LINEAR2,-V_ANGULAR2); break;
-            case N2: VelWheels(-V_LINEAR1,0); break;
-            case N3: VelWheels(-V_LINEAR2,V_ANGULAR2); break;
-            case N4: VelWheels(0,-V_ANGULAR1); break;
-            case N5: VelWheels(0,0); break;
-            case N6: VelWheels(0,V_ANGULAR1); break;
-            case N7: VelWheels(V_LINEAR2,-V_ANGULAR2); break;
-            case N8: VelWheels(V_LINEAR1,0); break;
-            case N9: VelWheels(V_LINEAR2,V_ANGULAR2); break;
+            // case N1: VelWheels(V_NEG,V_NEG); break;
+            case N2: VelWheels(V_NEG,V_NEG); break;
+            // case N3: VelWheels(V_NEG,V_POS); break;
+            case N4: VelWheels(V_NEG,V_POS); break;
+            case N5: VelWheels(V_ZERO,V_ZERO); break;
+            case N6: VelWheels(V_POS,V_NEG); break;
+            // case N7: VelWheels(V_POS,V_NEG); break;
+            case N8: VelWheels(V_POS,V_POS); break;
+            // case N9: VelWheels(V_POS,V_POS); break;
         }
     }
 
@@ -76,23 +76,23 @@ struct Status{
     {
         switch(key)
         {
-            case Q: case A: VelLink0(0); break;
-            case W: case S: VelLink1(0); break;
-            case E: case D: VelLink2(0); break;
-            case R: case F: VelLink3(0); break;
-            // case T: case G: VelLink4(0); break;
-            case 116: case G: VelLink4(0); break;
-            case Y: case H: VelGripper(0); break;
+            case Q: case A: VelLink0(V_ZERO); break;
+            case W: case S: VelLink1(V_ZERO); break;
+            case E: case D: VelLink2(V_ZERO); break;
+            case R: case F: VelLink3(V_ZERO); break;
+            // case T: case G: VelLink4(V_ZERO); break;
+            case 116: case G: VelLink4(V_ZERO); break;
+            case Y: case H: VelGripper(V_ZERO); break;
 
-            case N1: VelWheels(0,0); break;
-            case N2: VelWheels(0,0); break;
-            case N3: VelWheels(0,0); break;
-            case N4: VelWheels(0,0); break;
-            case N5: VelWheels(0,0); break;
-            case N6: VelWheels(0,0); break;
-            case N7: VelWheels(0,0); break;
-            case N8: VelWheels(0,0); break;
-            case N9: VelWheels(0,0); break;
+            case N1: VelWheels(V_ZERO,V_ZERO); break;
+            case N2: VelWheels(V_ZERO,V_ZERO); break;
+            case N3: VelWheels(V_ZERO,V_ZERO); break;
+            case N4: VelWheels(V_ZERO,V_ZERO); break;
+            case N5: VelWheels(V_ZERO,V_ZERO); break;
+            case N6: VelWheels(V_ZERO,V_ZERO); break;
+            case N7: VelWheels(V_ZERO,V_ZERO); break;
+            case N8: VelWheels(V_ZERO,V_ZERO); break;
+            case N9: VelWheels(V_ZERO,V_ZERO); break;
         }
     }
 

@@ -38,17 +38,21 @@
 #define N8 264
 #define N9 265
 
-#define V_LINK0 1
-#define V_LINK1 1
-#define V_LINK2 1
-#define V_LINK3 1
-#define V_LINK4 1
+#define V_ZERO 2047
+#define V_POS 4095
+#define V_NEG 0
 
-#define V_LINEAR1 4
-#define V_LINEAR2 3
-#define V_ANGULAR1 6
-#define V_ANGULAR2 4
-
-#define V_GRIP 1
+// #define V_LINK0 4096
+// #define V_LINK1 4096
+// #define V_LINK2 4096
+// #define V_LINK3 4096
+// #define V_LINK4 4096
+//
+// #define V_LINEAR1 4096
+// #define V_LINEAR2 4096
+// #define V_ANGULAR1 4096
+// #define V_ANGULAR2 4096
+//
+// #define V_GRIP 4096
 
 #endif
