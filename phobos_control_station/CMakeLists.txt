@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     image_transport
     cv_bridge
+    tf
 )
 
 find_package(OpenCV 3.0.0 REQUIRED)
@@ -25,3 +26,7 @@ target_link_libraries(uart_433_control_transceiver ${catkin_LIBRARIES})
 add_executable(pub_traveled_path
     src/pub_traveled_path/Main.cpp)
 target_link_libraries(pub_traveled_path ${catkin_LIBRARIES})
+
+add_executable(robot_pose_publisher
+    src/robot_pose_publisher/Main.cpp)
+target_link_libraries(robot_pose_publisher ${catkin_LIBRARIES})
