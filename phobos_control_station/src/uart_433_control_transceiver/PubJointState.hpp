@@ -29,6 +29,10 @@ public:
         joints_vec.push_back(AddJoint(&this->msg_js, joint_name));
     }
 
+    // void Add(JointConfig *JC, std::string joint_name){
+    //     joints_vec.push_back(AddJoint(&this->msg_js, JC, joint_name));
+    // }
+
     void Publish(){
         pub_js.publish(msg_js);
     }

@@ -3,6 +3,8 @@
 #include "../../../../../phobos_shared/src/phobos_shared/include/UART_Rx.hpp"
 #include "../../../../../phobos_shared/src/phobos_shared/include/UART_Tx.hpp"
 #include "../../../../../phobos_shared/src/phobos_shared/include/Conversions.hpp"
+#include "../../../../../phobos_shared/src/phobos_shared/include/JointConfig.hpp"
+
 
 #include "KeyDefinitions.hpp"
 #include "Status.hpp"
@@ -42,8 +44,8 @@ int main(int argc, char **argv){
         joint_state.Add("link_2_joint");
         joint_state.Add("link_3_joint");
         joint_state.Add("link_4_joint");
-        joint_state.Add("finger1_joint");
-        joint_state.Add("finger2_joint");
+        joint_state.Add("finger_l_joint");
+        joint_state.Add("finger_r_joint");
         joint_state.Add("rocker_l_bearing_joint");
         joint_state.Add("rocker_r_bearing_joint");
         joint_state.Add("bogie_l_bearing_joint");
@@ -105,25 +107,25 @@ int main(int argc, char **argv){
                 joint_state.msg_js.header.seq++;
                 joint_state.msg_js.header.stamp = ros::Time::now();
 
-                joint_state.msg_js.position[0] = rx.WORD.link_pose_0;
-                joint_state.msg_js.position[1] = rx.WORD.link_pose_1;
-                joint_state.msg_js.position[2] = rx.WORD.link_pose_2;
-                joint_state.msg_js.position[3] = rx.WORD.link_pose_3;
-                joint_state.msg_js.position[4] = rx.WORD.link_pose_4;
-                joint_state.msg_js.position[5] = rx.WORD.grip_pose;
-                joint_state.msg_js.position[6] = rx.WORD.grip_pose;
+                joint_state.msg_js.position[0] = LINK_0.IMP2RAD(rx.WORD.link_pose_0);
+                joint_state.msg_js.position[1] = LINK_1.IMP2RAD(rx.WORD.link_pose_1);
+                joint_state.msg_js.position[2] = LINK_2.IMP2RAD(rx.WORD.link_pose_2);
+                joint_state.msg_js.position[3] = LINK_3.IMP2RAD(rx.WORD.link_pose_3);
+                joint_state.msg_js.position[4] = LINK_4.IMP2RAD(rx.WORD.link_pose_4);
+                joint_state.msg_js.position[5] = GRIPPER.IMP2RAD(rx.WORD.grip_pose);
+                joint_state.msg_js.position[6] = GRIPPER.IMP2RAD(rx.WORD.grip_pose);
 
-                joint_state.msg_js.position[7] = rx.WORD.rocker_pose_l;
-                joint_state.msg_js.position[8] = rx.WORD.rocker_pose_r;
-                joint_state.msg_js.position[9] = rx.WORD.bogie_pose_l;
-                joint_state.msg_js.position[10] = rx.WORD.bogie_pose_r;
+                joint_state.msg_js.position[7] = ROCKER.IMP2RAD(rx.WORD.rocker_pose_l);
+                joint_state.msg_js.position[8] = ROCKER.IMP2RAD(rx.WORD.rocker_pose_r);
+                joint_state.msg_js.position[9] = BOGIE.IMP2RAD(rx.WORD.bogie_pose_l);
+                joint_state.msg_js.position[10] = BOGIE.IMP2RAD(rx.WORD.bogie_pose_r);
 
-                joint_state.msg_js.position[11] = 0;
-                joint_state.msg_js.position[12] = 0;
-                joint_state.msg_js.position[13] = 0;
-                joint_state.msg_js.position[14] = 0;
-                joint_state.msg_js.position[15] = 0;
-                joint_state.msg_js.position[16] = 0;
+                joint_state.msg_js.position[11] = WHEEL.IMP2RAD(rx.WORD.wheel_vel_fl);
+                joint_state.msg_js.position[12] = WHEEL.IMP2RAD(rx.WORD.wheel_vel_fr);
+                joint_state.msg_js.position[13] = WHEEL.IMP2RAD(rx.WORD.wheel_vel_ml);
+                joint_state.msg_js.position[14] = WHEEL.IMP2RAD(rx.WORD.wheel_vel_mr);
+                joint_state.msg_js.position[15] = WHEEL.IMP2RAD(rx.WORD.wheel_vel_bl);
+                joint_state.msg_js.position[16] = WHEEL.IMP2RAD(rx.WORD.wheel_vel_br);
 
                 joint_state.Publish();
 
