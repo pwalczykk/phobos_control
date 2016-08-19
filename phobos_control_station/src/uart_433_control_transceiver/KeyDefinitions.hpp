@@ -38,9 +38,9 @@
 #define N8 264
 #define N9 265
 
-#define V_ZERO 2047
-#define V_POS 4095
-#define V_NEG 0
+#define V_ZERO 0
+#define V_POS 32767
+#define V_NEG -32768
 
 // #define V_LINK0 4096
 // #define V_LINK1 4096

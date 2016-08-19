@@ -70,14 +70,14 @@ int main(int argc, char **argv){
                 pose_orient.msg_pose.header.seq++;
                 pose_orient.msg_pose.header.stamp = ros::Time::now();
 
-                pose_orient.msg_pose.pose.position.x = Odom_Int2Float(rx.WORD.position_x);
-                pose_orient.msg_pose.pose.position.y = Odom_Int2Float(rx.WORD.position_y);
-                pose_orient.msg_pose.pose.position.z = Odom_Int2Float(rx.WORD.position_z);
+                pose_orient.msg_pose.pose.position.x = Pose_Int2Float(rx.WORD.position_x);
+                pose_orient.msg_pose.pose.position.y = Pose_Int2Float(rx.WORD.position_y);
+                pose_orient.msg_pose.pose.position.z = Pose_Int2Float(rx.WORD.position_z);
 
-                pose_orient.msg_pose.pose.orientation.x = Odom_Int2Float(rx.WORD.orientation_x);
-                pose_orient.msg_pose.pose.orientation.y = Odom_Int2Float(rx.WORD.orientation_y);
-                pose_orient.msg_pose.pose.orientation.z = Odom_Int2Float(rx.WORD.orientation_z);
-                pose_orient.msg_pose.pose.orientation.w = Odom_Int2Float(rx.WORD.orientation_w);
+                pose_orient.msg_pose.pose.orientation.x = Orient_Int2Float(rx.WORD.orientation_x);
+                pose_orient.msg_pose.pose.orientation.y = Orient_Int2Float(rx.WORD.orientation_y);
+                pose_orient.msg_pose.pose.orientation.z = Orient_Int2Float(rx.WORD.orientation_z);
+                pose_orient.msg_pose.pose.orientation.w = Orient_Int2Float(rx.WORD.orientation_w);
 
                 pose_orient.Publish();
 

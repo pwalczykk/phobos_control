@@ -1,0 +1,3 @@
+<launch>
+    <node name="uart_433_control_transceiver" pkg="phobos_control_station" type="uart_433_control_transceiver" output="screen" respawn="true"/>
+</launch>
