@@ -59,7 +59,7 @@ int main(int argc, char **argv){
 
     int UART_SYNCHRO = 0;
     int ERROR_COUNTER = 0;
-    int MAX_ERROR_NUM = 21;
+    int MAX_ERROR_NUM = 5;
 
     ros::Rate loop_rate(BASIC_RATE);
     ros::Rate synchro_rate(SYNCHRO_RATE);
@@ -141,7 +141,7 @@ int main(int argc, char **argv){
         }
 
         if(ERROR_COUNTER > MAX_ERROR_NUM){
-            // exit(-1);
+            exit(-1);
         }
 
         // TRANSMITER
