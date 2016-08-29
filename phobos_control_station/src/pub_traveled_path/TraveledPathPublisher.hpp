@@ -20,6 +20,9 @@ public:
     TraveledPathPublisher(std::string topic_odom, std::string topic_path){
         sub_odom = nh.subscribe(topic_odom, 100, &TraveledPathPublisher::Callback, this);
         pub_path = nh.advertise<nav_msgs::Path>(topic_path, 100);
+
+        traveled_path.header.seq = 0;
+        traveled_path.header.frame_id = "odom";
     }
 
     void Callback(const geometry_msgs::PoseStamped current_pose){
@@ -41,6 +44,8 @@ public:
     }
 
     void Update(){
+        traveled_path.header.seq++;
+        traveled_path.header.stamp = ros::Time::now();
         pub_path.publish(traveled_path);
     }
 };

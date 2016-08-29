@@ -8,9 +8,13 @@ find_package(catkin REQUIRED COMPONENTS
     image_transport
     cv_bridge
     tf
+    phobos_shared
 )
 
 find_package(OpenCV 3.0.0 REQUIRED)
+
+include_directories(${catkin_INCLUDE_DIRS})
+
 catkin_package()
 
 include_directories(SYSTEM ${OpenCV_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
