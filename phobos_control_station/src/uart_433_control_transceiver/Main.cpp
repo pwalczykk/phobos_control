@@ -32,12 +32,12 @@ int main(int argc, char **argv){
     // UART_Tx <FrameTeleoperation>tx("/dev/ttyACM0", TELEOPERATION_DATA_NUM, TELEOPERATION_BUFFOR_SIZE);
     // UART_Rx <FrameTelemetry>rx("/dev/ttyACM0",TELEMETRY_DATA_NUM, TELEMETRY_BUFFOR_SIZE);
 
-    UART_Tx TX("/dev/ttyAMA0");
+    UART_Tx TX("/dev/ttyACM0");
     UART_Tx_Encoder <FrameTeleoperationCtrl>    tx_ctrl    (&TX, TO_CTRL_DATA_NUM,      TO_CTRL_DATA_SIZE,      TO_CTRL_BUFFOR_SIZE);
     UART_Tx_Encoder <FrameTeleoperationWheels>  tx_wheels  (&TX, TO_WHEELS_DATA_NUM,    TO_WHEELS_DATA_SIZE,    TO_WHEELS_BUFFOR_SIZE);
     UART_Tx_Encoder <FrameTeleoperationArm>     tx_arm     (&TX, TO_ARM_DATA_NUM,       TO_ARM_DATA_SIZE,       TO_ARM_BUFFOR_SIZE);
 
-    UART_Rx RX("/dev/ttyAMA0");
+    UART_Rx RX("/dev/ttyACM0");
     UART_Rx_Decoder <FrameTelemetryPose>        rx_pose    (&RX, TM_POSE_DATA_NUM,      TM_POSE_DATA_SIZE,      TM_POSE_BUFFOR_SIZE);
     UART_Rx_Decoder <FrameTelemetryOrient>      rx_orient  (&RX, TM_ORIENT_DATA_NUM,    TM_ORIENT_DATA_SIZE,    TM_ORIENT_BUFFOR_SIZE);
     UART_Rx_Decoder <FrameTelemetryWheels>      rx_wheels  (&RX, TM_WHEELS_DATA_NUM,    TM_WHEELS_DATA_SIZE,    TM_WHEELS_BUFFOR_SIZE);
@@ -47,9 +47,9 @@ int main(int argc, char **argv){
     // SubKey sub_key(&nh, &__status);
     // SubJoy sub_joy(&nh, &__status);
 
-    bool NEW_MSG_CTRL = 0;
-    bool NEW_MSG_WHEELS = 0;
-    bool NEW_MSG_ARM = 0;
+    bool NEW_MSG_CTRL = false;
+    bool NEW_MSG_WHEELS = false;
+    bool NEW_MSG_ARM = false;
 
     SubTeleop <std_msgs::Int16> sub_ctrl ("/control/teleop/ctrl", &nh, &NEW_MSG_CTRL);
     SubTeleop <phobos_shared::TeleopWheels> sub_wheels ("/control/teleop/wheels", &nh, &NEW_MSG_WHEELS);
@@ -215,8 +215,12 @@ int main(int argc, char **argv){
             TX.Transmit(TO_ARM_BUFFOR_SIZE);
         }
 
-        else if(sub_ctrl.NewMsg()){
-            tx_ctrl.FRAME.header.ctrl = sub_ctrl.msg.data;
+        else {
+
+            ROS_INFO("CTRL trasnmitting");
+            tx_ctrl.FRAME.header.type = FRAME_TO_CTRL;
+            // tx_ctrl.FRAME.header.ctrl = sub_ctrl.msg.data;
+            tx_ctrl.FRAME.header.ctrl = 0;
 
             tx_ctrl.EncodeBuffor();
 

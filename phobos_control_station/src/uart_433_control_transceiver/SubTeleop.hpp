@@ -15,6 +15,7 @@ public:
 public:
     SubTeleop(std::string topic, ros::NodeHandle *nh, bool* new_msg){
         this->nh = nh;
+        this->new_msg = new_msg;
         this->sub = nh->subscribe(topic, 100, &SubTeleop::MsgInterrupt, this);
     }
     ~SubTeleop(){}
@@ -25,12 +26,9 @@ public:
     }
 
     bool NewMsg(){
-        if (*new_msg == 1){
-            *new_msg = 0;
-            return true;
-        } else{
-            return false;
-        }
+        bool result = *new_msg;
+        *new_msg = false;
+        return result;
     }
 };
 #endif
