@@ -8,7 +8,7 @@ class PubEncodersAll{
     ros::NodeHandle *nh;
     ros::Publisher pub;
 public:
-    phobos_shared::EncodersAll msg_encoders;
+    phobos_shared::EncodersAll msg;
 
 public:
     PubEncodersAll(ros::NodeHandle *nh, std::string topic){
@@ -17,7 +17,7 @@ public:
     }
 
     void Publish(){
-        pub.publish(this->msg_encoders);
+        pub.publish(this->msg);
     }
 
 };
