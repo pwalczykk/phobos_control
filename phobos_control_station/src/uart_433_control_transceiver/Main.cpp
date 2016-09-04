@@ -92,6 +92,8 @@ int main(int argc, char **argv){
                     if(rx_pose.CheckControlSum()){
                         rx_pose.DecodeBuffor();
 
+                        ROS_INFO("Pose recived");
+
                         pub_ctrl.msg.data = rx_pose.FRAME.header.ctrl;
                         pub_ctrl.Publish();
 
@@ -102,10 +104,14 @@ int main(int argc, char **argv){
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
                     }
+                    break;
                 }
                 case FRAME_TM_ORIENT: {
                     if(rx_orient.CheckControlSum()){
                         rx_orient.DecodeBuffor();
+
+                        ROS_INFO("Orient recived");
+
 
                         pub_ctrl.msg.data = rx_orient.FRAME.header.ctrl;
                         pub_ctrl.Publish();
@@ -118,10 +124,14 @@ int main(int argc, char **argv){
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
                     }
+                    break;
                 }
                 case FRAME_TM_WHEELS: {
                     if(rx_wheels.CheckControlSum()){
                         rx_wheels.DecodeBuffor();
+
+                        ROS_INFO("Wheels recived");
+
 
                         pub_ctrl.msg.data = rx_wheels.FRAME.header.ctrl;
                         pub_ctrl.Publish();
@@ -136,10 +146,14 @@ int main(int argc, char **argv){
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
                     }
+                    break;
                 }
                 case FRAME_TM_ARM: {
                     if(rx_arm.CheckControlSum()){
                         rx_arm.DecodeBuffor();
+
+                        ROS_INFO("Arm recived");
+
 
                         pub_ctrl.msg.data = rx_arm.FRAME.header.ctrl;
                         pub_ctrl.Publish();
@@ -154,10 +168,14 @@ int main(int argc, char **argv){
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
                     }
+                    break;
                 }
                 case FRAME_TM_SUSP: {
                     if(rx_susp.CheckControlSum()){
                         rx_susp.DecodeBuffor();
+
+                        ROS_INFO("Susp recived");
+
 
                         pub_ctrl.msg.data = rx_susp.FRAME.header.ctrl;
                         pub_ctrl.Publish();
@@ -170,6 +188,7 @@ int main(int argc, char **argv){
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
                     }
+                    break;
                 }
                 default : {
                     ROS_WARN("RX frame not recognized! Type: %c (ASCII: %d)", RX.DecodeMessageType(), (int)RX.DecodeMessageType());
@@ -219,8 +238,8 @@ int main(int argc, char **argv){
 
             ROS_INFO("CTRL trasnmitting");
             tx_ctrl.FRAME.header.type = FRAME_TO_CTRL;
-            // tx_ctrl.FRAME.header.ctrl = sub_ctrl.msg.data;
-            tx_ctrl.FRAME.header.ctrl = 0;
+            tx_ctrl.FRAME.header.ctrl = sub_ctrl.msg.data;
+            // tx_ctrl.FRAME.header.ctrl = 0;
 
             tx_ctrl.EncodeBuffor();
 
