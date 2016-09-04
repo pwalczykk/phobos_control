@@ -97,9 +97,9 @@ int main(int argc, char **argv){
                         pub_ctrl.msg.data = rx_pose.FRAME.header.ctrl;
                         pub_ctrl.Publish();
 
-                        pub_pose_orient.msg.pose.position.x = rx_pose.FRAME.position_x;
-                        pub_pose_orient.msg.pose.position.y = rx_pose.FRAME.position_y;
-                        pub_pose_orient.msg.pose.position.z = rx_pose.FRAME.position_z;
+                        pub_pose_orient.msg.pose.position.x = Pose_Int2Float(rx_pose.FRAME.position_x);
+                        pub_pose_orient.msg.pose.position.y = Pose_Int2Float(rx_pose.FRAME.position_y);
+                        pub_pose_orient.msg.pose.position.z = Pose_Int2Float(rx_pose.FRAME.position_z);
                         pub_pose_orient.Publish();
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
@@ -116,10 +116,10 @@ int main(int argc, char **argv){
                         pub_ctrl.msg.data = rx_orient.FRAME.header.ctrl;
                         pub_ctrl.Publish();
 
-                        pub_pose_orient.msg.pose.orientation.x = rx_orient.FRAME.orientation_x;
-                        pub_pose_orient.msg.pose.orientation.y = rx_orient.FRAME.orientation_y;
-                        pub_pose_orient.msg.pose.orientation.z = rx_orient.FRAME.orientation_z;
-                        pub_pose_orient.msg.pose.orientation.w = rx_orient.FRAME.orientation_w;
+                        pub_pose_orient.msg.pose.orientation.x = Orient_Int2Float(rx_orient.FRAME.orientation_x);
+                        pub_pose_orient.msg.pose.orientation.y = Orient_Int2Float(rx_orient.FRAME.orientation_y);
+                        pub_pose_orient.msg.pose.orientation.z = Orient_Int2Float(rx_orient.FRAME.orientation_z);
+                        pub_pose_orient.msg.pose.orientation.w = Orient_Int2Float(rx_orient.FRAME.orientation_w);
                         pub_pose_orient.Publish();
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
@@ -207,6 +207,7 @@ int main(int argc, char **argv){
         // TRANSMITER
         ros::spinOnce();
         if(sub_wheels.NewMsg()){
+            ROS_INFO("WHEELS trasnmitting");
             tx_wheels.FRAME.header.type = FRAME_TO_WHEELS;
             tx_wheels.FRAME.header.ctrl = sub_ctrl.msg.data;
 
@@ -219,6 +220,7 @@ int main(int argc, char **argv){
         }
 
         else if(sub_arm.NewMsg()){
+            ROS_INFO("ARM trasnmitting");
             tx_arm.FRAME.header.type = FRAME_TO_ARM;
             tx_arm.FRAME.header.ctrl = sub_ctrl.msg.data;
 
@@ -235,11 +237,9 @@ int main(int argc, char **argv){
         }
 
         else {
-
             ROS_INFO("CTRL trasnmitting");
             tx_ctrl.FRAME.header.type = FRAME_TO_CTRL;
             tx_ctrl.FRAME.header.ctrl = sub_ctrl.msg.data;
-            // tx_ctrl.FRAME.header.ctrl = 0;
 
             tx_ctrl.EncodeBuffor();
 
