@@ -1,0 +1,34 @@
+<launch>
+
+    <node
+        name="keyboard"
+        pkg="keyboard"
+        type="keyboard"
+        ns="/control"
+    >
+<remap from="/control/keyup" to="control/keyboard/keyup"/>
+<remap from="/control/keydown" to="control/keyboard/keydown"/>
+    </node>
+
+
+
+    <node name="joy" pkg="joy" type="joy_node" ns="/control">
+        <remap from="/control/joy" to="/control/joystick/joy"/>
+    </node>
+
+    <node
+        name="reverse_kinematics"
+        pkg="phobos_control_manipulator"
+        type="reverse_kinematics"
+    ></node>
+
+
+
+    <node
+        name="manip_operation"
+        pkg="phobos_control_manipulator"
+        type="manip_operation"
+
+    ></node>
+
+</launch>
