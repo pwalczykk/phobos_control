@@ -38,7 +38,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "phobos_shared_node");
   ros::NodeHandle nh;
 
-  cal.SetLengths(0.05,0.5,0.25,0.25);
+  cal.SetLengths(0.05,0.45,0.30,0.36);
   cal.Init("/control/teleop/arm", &nh);
 
   ros::Subscriber sub = nh.subscribe("/control/reverse_kinematics/manip_given_position_orientation", 10, CalculateReverseKinematics);
