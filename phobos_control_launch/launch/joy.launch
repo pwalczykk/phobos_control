@@ -1,6 +1,5 @@
 <launch>
-    <node name="joy" pkg="joy" type="joy_node">
+    <node name="joy" pkg="joy" type="joy_node" output="screen">
         <param name="~dev" value="/dev/input/js1"/>
     </node>
-    <node name="joy_teleop" pkg="joy_teleop"
 </launch>

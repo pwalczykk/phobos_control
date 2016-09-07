@@ -11,6 +11,11 @@ find_package(catkin REQUIRED COMPONENTS
   dynamic_reconfigure
 )
 
+generate_dynamic_reconfigure_options(
+  cfg/ManipParameters.cfg
+  cfg/WheelsParam.cfg
+)
+
 include_directories(${catkin_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS})
 
  add_message_files(
@@ -40,3 +45,11 @@ add_executable(manip_operation
     src/manip_operation/src/ManipGivenPosOriServerJoy.cpp)
 target_link_libraries(manip_operation ${catkin_LIBRARIES})
 add_dependencies( manip_operation ${phobos_manip_operation}_gencfg)
+
+
+add_executable(wheel_control
+    src/wheel_control/src/Main.cpp
+    src/wheel_control/src/WheelJoyOp.cpp
+    src/wheel_control/src/WheelKeyOp.cpp)
+target_link_libraries(wheel_control ${catkin_LIBRARIES})
+add_dependencies( wheel_control ${phobos_manip_operation}_gencfg)

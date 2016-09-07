@@ -14,12 +14,14 @@ ReverseKinematicsCalculator::ReverseKinematicsCalculator(double l1, double l2, d
 	
 }
 
-void ReverseKinematicsCalculator::SetPositionOrientation(double msgx, double msgy, double msgz, double msgangle){
+void ReverseKinematicsCalculator::SetPositionOrientation(double msgx, double msgy, double msgz, double msgangle, float msgroll, float msggrip){
 	
 	x = msgx;
 	y = msgy;
 	z = msgz;
 	angle = msgangle;
+	roll = msgroll;
+	grip = msggrip;
 	
 }
 
@@ -32,9 +34,36 @@ void ReverseKinematicsCalculator::SetPositionOrientation(double msgx, double msg
 	 
  }
  
+ float ReverseKinematicsCalculator::Roll(void){
+	 return roll;
+ }
+ 
+ float ReverseKinematicsCalculator::Grip(void){
+	 return grip;
+ }
+ 
  double ReverseKinematicsCalculator::ReturnLink(int link_number){
 	 
 	 return link[link_number];
+	 
+ }
+ 
+ void ReverseKinematicsCalculator::Init(const char* topic, ros::NodeHandle *nh){
+	 
+	 pub = nh->advertise<phobos_shared::TeleopArmFloat>(topic,100);
+	 
+ }
+ 
+ void ReverseKinematicsCalculator::Publish(void){
+	 
+	 msg.link_0 = link[0];
+	 msg.link_1 = link[1];
+	 msg.link_2 = link[2];
+	 msg.link_3 = link[3];
+	 msg.link_4 = roll;
+	 msg.grip = this->grip;
+	 
+	 pub.publish(msg);
 	 
  }
  
@@ -48,7 +77,7 @@ int ReverseKinematicsCalculator::CalculateReverseKinematics(){
 	link[0] = 0;
 	link[1] = 0;
 	link[2] = 0;
-	link[4] = 0;
+	link[3] = 0;
 	
 	//Calculate link0 value
 	link[0] = atan2(y,x);

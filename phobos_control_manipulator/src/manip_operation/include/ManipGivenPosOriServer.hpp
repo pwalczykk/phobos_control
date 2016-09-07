@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Char.h>
-#include <rover_manip_control/PositionOrientation.h>
+#include <phobos_shared/PositionOrientation.h>
 
 
 class ManipGivenPosOriServer
@@ -15,7 +15,7 @@ class ManipGivenPosOriServer
 	 bool active;
 	 char character;
 	 
-	 rover_manip_control::PositionOrientation msgpub;
+	 phobos_shared::PositionOrientation msgpub;
 	 
 	 ros::NodeHandle* nh;
 	 ros::Publisher pub;

@@ -6,14 +6,19 @@
         type="keyboard"
         ns="/control"
     >
-<remap from="/control/keyup" to="control/keyboard/keyup"/>
-<remap from="/control/keydown" to="control/keyboard/keydown"/>
+        <remap from="/control/keyup" to="control/keyboard/keyup"/>
+        <remap from="/control/keydown" to="control/keyboard/keydown"/>
     </node>
 
 
 
-    <node name="joy" pkg="joy" type="joy_node" ns="/control">
-        <remap from="/control/joy" to="/control/joystick/joy"/>
+    <!-- <node name="joy" pkg="joy" type="joy_node" output="screen">
+        <param name="~dev" value="/dev/input/js1"/>
+        <remap from="/joy" to="/control/joystick/joy"/>
+    </node> -->
+
+    <node name="joy" pkg="joy" type="joy_node" output="screen">
+        <param name="~dev" value="/dev/input/js1"/>
     </node>
 
     <node
@@ -22,13 +27,15 @@
         type="reverse_kinematics"
     ></node>
 
+    <node name="manip_operation" pkg="phobos_control_manipulator" type="manip_operation" >
+        <remap from="/control/joystick/joy" to="/joy"/>
+    </node>
 
+    <node name="wheel_control" pkg="phobos_control_manipulator" type="wheel_control">
+        <remap from="/control/joystick/joy" to="/joy"/>
+    </node>
 
-    <node
-        name="manip_operation"
-        pkg="phobos_control_manipulator"
-        type="manip_operation"
+    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>
 
-    ></node>
 
 </launch>

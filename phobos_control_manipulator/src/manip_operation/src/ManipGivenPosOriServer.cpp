@@ -12,7 +12,7 @@ void ManipGivenPosOriServer::Init(const char* topicpub, ros::NodeHandle* nh){
 	
 	active = false;
 	
-	pub = nh->advertise<rover_manip_control::PositionOrientation>(topicpub,100);
+	pub = nh->advertise<phobos_shared::PositionOrientation>(topicpub,100);
 	
 }
 
@@ -36,7 +36,7 @@ void ManipGivenPosOriServer::SetGivenValues(std::vector<float>* data){
 	z_given = (*data)[2];
 	angle_given = (*data)[3];
 	roll_given = (*data)[4];
-	grip_given = (*data)[4];
+	grip_given = (*data)[5];
 	
 }
 
@@ -121,9 +121,15 @@ void ManipGivenPosOriServer::ProcessInput(void){
 		
 	}
 	
-	Publish();
+	if(roll_given > 3.1415) roll_given = 3.1415;
+	if(roll_given < -3.1415) roll_given = -3.1415;
+	
+	if(grip_given > 1) grip_given = 1;
+	if(grip_given < 0) grip_given = 0;
 	
 	}
+	
+	Publish();
 	
 }
 

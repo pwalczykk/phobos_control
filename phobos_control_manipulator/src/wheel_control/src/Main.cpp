@@ -1,24 +1,23 @@
 #include <ros/ros.h>
-#include "../include/ManipGivenPosOriServer.hpp"
-#include "../include/ManipGivenPosOriServerJoy.hpp"
+#include "../include/WheelKeyOp.hpp"
+#include "../include/WheelJoyOp.hpp"
 
 #include <sensor_msgs/Joy.h>
 #include <keyboard/Key.h>
 
 #include <dynamic_reconfigure/server.h>
-#include <phobos_control_manipulator/ManipParametersConfig.h>
+#include <phobos_control_manipulator/WheelsParamConfig.h>
 
-ManipGivenPosOriServer keyboardop;
-ManipGivenPosOriServerJoy joyop;
+WheelKeyOp keyboardop;
+WheelJoyOp joyop;
 
 bool operatingKeyboard;
 bool operatingJoy;
 bool operatingGlobal;
 
-std::vector<float> ax(6);
+std::vector<float> ax(7);
 std::vector<int> but(12);
 
-std::vector<float> LastGiven(6);
 
 void RespondJoy(const sensor_msgs::Joy::ConstPtr& received){
 
@@ -30,7 +29,7 @@ void RespondJoy(const sensor_msgs::Joy::ConstPtr& received){
 void RespondDown(const keyboard::Key::ConstPtr& received){
 
 	if(operatingKeyboard && operatingGlobal){
-		ROS_INFO("Wlaczam Keyboard");
+
 		keyboardop.Activate();
 		keyboardop.SetChar(received->code);
 	}
@@ -40,27 +39,18 @@ void RespondDown(const keyboard::Key::ConstPtr& received){
 void RespondUp(const keyboard::Key::ConstPtr& received){
 
 	if(operatingKeyboard && operatingGlobal){
-		if(received->code == keyboardop.Character())
-		ROS_INFO("Wylaczam keyboard");
+
+		keyboardop.ResetChar(received->code);
+			if(keyboardop.AllOff())
 			keyboardop.Deactivate();
 	}
 
 }
 
-void ChangeOperation(phobos_control_manipulator::ManipParametersConfig &config, uint32_t level) {
-
-	static int lastmethod;
-
-	operatingGlobal = config.active;
-
-	if(operatingGlobal){
-
-	if(config.method != lastmethod){
+void ChangeOperation(phobos_control_manipulator::WheelsParamConfig &config, uint32_t level) {
 
   //TURNING KEYBOARD ON
   if(config.method == 1) {
-	  LastGiven = *(joyop.GetGivenValues());
-	  keyboardop.SetGivenValues(&LastGiven);
 	  operatingKeyboard = true;
   }
   else{
@@ -69,28 +59,22 @@ void ChangeOperation(phobos_control_manipulator::ManipParametersConfig &config, 
 
   //TURNING JOY ON
   if(config.method == 0) {
-	  LastGiven = *(keyboardop.GetGivenValues());
-	  joyop.SetGivenValues(&LastGiven);
 	  operatingJoy = true;
   }
   else{
 	  operatingJoy = false;
   }
 
-}
-}
-
-  joyop.SetJoystickSensitivity(config.joystick_sensitivity);
-  keyboardop.SetLinearIncrement(config.linear_increment);
-  keyboardop.SetAngularIncrement(config.angular_increment);
-
-  lastmethod = config.method;
+  joyop.SetJoystickSensitivity(config.max_velocity);
+  keyboardop.SetMaxVel(config.max_velocity);
+  keyboardop.SetTurningFactor(config.keyboard_turning);
+  operatingGlobal = config.active;
 
 }
 
 int main(int argc, char **argv)
 {
-	ros::init(argc, argv, "rover_manip_operation_node");
+	ros::init(argc, argv, "wheel_control");
 	ros::NodeHandle nh;
 
 	ros::Subscriber subkeydown, subkeyup, subjoy;
@@ -98,8 +82,8 @@ int main(int argc, char **argv)
 
 
 	//DYNAMIC RECONFIGURE
-	dynamic_reconfigure::Server<phobos_control_manipulator::ManipParametersConfig> server;
-	dynamic_reconfigure::Server<phobos_control_manipulator::ManipParametersConfig>::CallbackType f;
+	dynamic_reconfigure::Server<phobos_control_manipulator::WheelsParamConfig> server;
+	dynamic_reconfigure::Server<phobos_control_manipulator::WheelsParamConfig>::CallbackType f;
 
 	f = boost::bind(&ChangeOperation, _1, _2);
 	server.setCallback(f);
@@ -112,11 +96,9 @@ int main(int argc, char **argv)
 
 
 	//INIT OBJECTS
-	keyboardop.Init("/control/reverse_kinematics/manip_given_position_orientation", &nh);
-	keyboardop.SetGivenValues(0.25,0.0,0.0,-1.57,0,0);
+	keyboardop.Init("/control/teleop/wheels", &nh);
 
-	joyop.Init("/control/reverse_kinematics/manip_given_position_orientation", &nh);
-	joyop.SetGivenValues(0.25,0.0,0.0,-1.57,0,0);
+	joyop.Init("/control/teleop/wheels", &nh);
 
 	while(ros::ok()){
 
@@ -125,12 +107,10 @@ int main(int argc, char **argv)
 	if(operatingGlobal){
 
 		if(operatingKeyboard){
-			ROS_INFO("Dziala keyboard");
 			keyboardop.ProcessInput();
 		}
 
 		if(operatingJoy){
-			ROS_INFO("Dziala joy");
 			joyop.ProcessInput(&ax,&but);
 		}
 

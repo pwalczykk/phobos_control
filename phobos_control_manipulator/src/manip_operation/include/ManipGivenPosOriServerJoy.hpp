@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Char.h>
-#include <rover_manip_control/PositionOrientation.h>
+#include <phobos_shared/PositionOrientation.h>
 
 
 class ManipGivenPosOriServerJoy
@@ -12,7 +12,7 @@ class ManipGivenPosOriServerJoy
 	 float x_given, y_given, z_given, angle_given, roll_given, grip_given, joystick_sensitivity;
 	 bool rollgrip_mode;
 	 
-	 rover_manip_control::PositionOrientation msgpub;
+	 phobos_shared::PositionOrientation msgpub;
 	 
 	 ros::NodeHandle* nh;
 	 ros::Publisher pub;
