@@ -2,10 +2,10 @@
 
 #include "../../../../../phobos_shared/src/phobos_shared/include/UART_Shared.hpp"
 #include "../../../../../phobos_shared/src/phobos_shared/include/Conversions.hpp"
-#include "../../../../../phobos_shared/src/phobos_shared/include/JointConfig.hpp"
+// #include "../../../../../phobos_shared/src/phobos_shared/include/JointConfig.hpp"
 
-#include "KeyDefinitions.hpp"
-#include "Status.hpp"
+// #include "KeyDefinitions.hpp"
+// #include "Status.hpp"
 
 // #include "SubKey.hpp"
 // #include "SubJoy.hpp"
@@ -27,7 +27,7 @@ int main(int argc, char **argv){
     nh.param("basic_rate", BASIC_RATE, 5);
     nh.param("synchro_rate", SYNCHRO_RATE, 5);
 
-    Status __status;
+    // Status __status;
 
     // UART_Tx <FrameTeleoperation>tx("/dev/ttyACM0", TELEOPERATION_DATA_NUM, TELEOPERATION_BUFFOR_SIZE);
     // UART_Rx <FrameTelemetry>rx("/dev/ttyACM0",TELEMETRY_DATA_NUM, TELEMETRY_BUFFOR_SIZE);
@@ -52,8 +52,8 @@ int main(int argc, char **argv){
     bool NEW_MSG_ARM = false;
 
     SubTeleop <std_msgs::Int16> sub_ctrl ("/control/teleop/ctrl", &nh, &NEW_MSG_CTRL);
-    SubTeleop <phobos_shared::TeleopWheels> sub_wheels ("/control/teleop/wheels", &nh, &NEW_MSG_WHEELS);
-    SubTeleop <phobos_shared::TeleopArm> sub_arm ("/control/teleop/arm", &nh, &NEW_MSG_ARM);
+    SubTeleop <phobos_shared::TeleopWheelsFloat> sub_wheels ("/control/teleop/wheels", &nh, &NEW_MSG_WHEELS);
+    SubTeleop <phobos_shared::TeleopArmFloat> sub_arm ("/control/teleop/arm", &nh, &NEW_MSG_ARM);
 
     PubErrorCode pub_ctrl(&nh, "/control/rover/error_code");
     PubPoseOrient pub_pose_orient(&nh, "/control/localization/pose_ekf");
@@ -97,9 +97,9 @@ int main(int argc, char **argv){
                         pub_ctrl.msg.data = rx_pose.FRAME.header.ctrl;
                         pub_ctrl.Publish();
 
-                        pub_pose_orient.msg.pose.position.x = Pose_Int2Float(rx_pose.FRAME.position_x);
-                        pub_pose_orient.msg.pose.position.y = Pose_Int2Float(rx_pose.FRAME.position_y);
-                        pub_pose_orient.msg.pose.position.z = Pose_Int2Float(rx_pose.FRAME.position_z);
+                        pub_pose_orient.msg.pose.position.x = conv::Pose_Int2Float(rx_pose.FRAME.position_x);
+                        pub_pose_orient.msg.pose.position.y = conv::Pose_Int2Float(rx_pose.FRAME.position_y);
+                        pub_pose_orient.msg.pose.position.z = conv::Pose_Int2Float(rx_pose.FRAME.position_z);
                         pub_pose_orient.Publish();
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
@@ -116,10 +116,10 @@ int main(int argc, char **argv){
                         pub_ctrl.msg.data = rx_orient.FRAME.header.ctrl;
                         pub_ctrl.Publish();
 
-                        pub_pose_orient.msg.pose.orientation.x = Orient_Int2Float(rx_orient.FRAME.orientation_x);
-                        pub_pose_orient.msg.pose.orientation.y = Orient_Int2Float(rx_orient.FRAME.orientation_y);
-                        pub_pose_orient.msg.pose.orientation.z = Orient_Int2Float(rx_orient.FRAME.orientation_z);
-                        pub_pose_orient.msg.pose.orientation.w = Orient_Int2Float(rx_orient.FRAME.orientation_w);
+                        pub_pose_orient.msg.pose.orientation.x = conv::Orient_Int2Float(rx_orient.FRAME.orientation_x);
+                        pub_pose_orient.msg.pose.orientation.y = conv::Orient_Int2Float(rx_orient.FRAME.orientation_y);
+                        pub_pose_orient.msg.pose.orientation.z = conv::Orient_Int2Float(rx_orient.FRAME.orientation_z);
+                        pub_pose_orient.msg.pose.orientation.w = conv::Orient_Int2Float(rx_orient.FRAME.orientation_w);
                         pub_pose_orient.Publish();
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
@@ -136,12 +136,12 @@ int main(int argc, char **argv){
                         pub_ctrl.msg.data = rx_wheels.FRAME.header.ctrl;
                         pub_ctrl.Publish();
 
-                        pub_encoders_all.msg.wheel_vel_fl = rx_wheels.FRAME.wheel_vel_fl;
-                        pub_encoders_all.msg.wheel_vel_fr = rx_wheels.FRAME.wheel_vel_fr;
-                        pub_encoders_all.msg.wheel_vel_ml = rx_wheels.FRAME.wheel_vel_ml;
-                        pub_encoders_all.msg.wheel_vel_mr = rx_wheels.FRAME.wheel_vel_mr;
-                        pub_encoders_all.msg.wheel_vel_bl = rx_wheels.FRAME.wheel_vel_bl;
-                        pub_encoders_all.msg.wheel_vel_br = rx_wheels.FRAME.wheel_vel_br;
+                        pub_encoders_all.msg.wheel_vel_fl = conv::wheel_enc.FromRx(rx_wheels.FRAME.wheel_vel_fl);
+                        pub_encoders_all.msg.wheel_vel_fr = conv::wheel_enc.FromRx(rx_wheels.FRAME.wheel_vel_fr);
+                        pub_encoders_all.msg.wheel_vel_ml = conv::wheel_enc.FromRx(rx_wheels.FRAME.wheel_vel_ml);
+                        pub_encoders_all.msg.wheel_vel_mr = conv::wheel_enc.FromRx(rx_wheels.FRAME.wheel_vel_mr);
+                        pub_encoders_all.msg.wheel_vel_bl = conv::wheel_enc.FromRx(rx_wheels.FRAME.wheel_vel_bl);
+                        pub_encoders_all.msg.wheel_vel_br = conv::wheel_enc.FromRx(rx_wheels.FRAME.wheel_vel_br);
                         pub_encoders_all.Publish();
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
@@ -158,12 +158,12 @@ int main(int argc, char **argv){
                         pub_ctrl.msg.data = rx_arm.FRAME.header.ctrl;
                         pub_ctrl.Publish();
 
-                        pub_encoders_all.msg.link_pose_0 = rx_arm.FRAME.link_pose_0;
-                        pub_encoders_all.msg.link_pose_1 = rx_arm.FRAME.link_pose_1;
-                        pub_encoders_all.msg.link_pose_2 = rx_arm.FRAME.link_pose_2;
-                        pub_encoders_all.msg.link_pose_3 = rx_arm.FRAME.link_pose_3;
-                        pub_encoders_all.msg.link_pose_4 = rx_arm.FRAME.link_pose_4;
-                        pub_encoders_all.msg.grip_pose = rx_arm.FRAME.grip_pose;
+                        pub_encoders_all.msg.link_pose_0 = conv::link0_enc.FromRx(rx_arm.FRAME.link_pose_0);
+                        pub_encoders_all.msg.link_pose_1 = conv::link1_enc.FromRx(rx_arm.FRAME.link_pose_1);
+                        pub_encoders_all.msg.link_pose_2 = conv::link2_enc.FromRx(rx_arm.FRAME.link_pose_2);
+                        pub_encoders_all.msg.link_pose_3 = conv::link3_enc.FromRx(rx_arm.FRAME.link_pose_3);
+                        pub_encoders_all.msg.link_pose_4 = conv::link4_enc.FromRx(rx_arm.FRAME.link_pose_4);
+                        pub_encoders_all.msg.grip_pose = conv::grip_enc.FromRx(rx_arm.FRAME.grip_pose);
                         pub_encoders_all.Publish();
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
@@ -180,10 +180,10 @@ int main(int argc, char **argv){
                         pub_ctrl.msg.data = rx_susp.FRAME.header.ctrl;
                         pub_ctrl.Publish();
 
-                        pub_encoders_all.msg.rocker_pose_l = rx_susp.FRAME.rocker_pose_l;
-                        pub_encoders_all.msg.rocker_pose_r = rx_susp.FRAME.rocker_pose_r;
-                        pub_encoders_all.msg.bogie_pose_l = rx_susp.FRAME.bogie_pose_l;
-                        pub_encoders_all.msg.bogie_pose_r = rx_susp.FRAME.bogie_pose_r;
+                        pub_encoders_all.msg.rocker_pose_l = conv::rocker_enc.FromRx(rx_susp.FRAME.rocker_pose_l);
+                        pub_encoders_all.msg.rocker_pose_r = conv::rocker_enc.FromRx(rx_susp.FRAME.rocker_pose_r);
+                        pub_encoders_all.msg.bogie_pose_l = conv::bogie_enc.FromRx(rx_susp.FRAME.bogie_pose_l);
+                        pub_encoders_all.msg.bogie_pose_r = conv::bogie_enc.FromRx(rx_susp.FRAME.bogie_pose_r);
                         pub_encoders_all.Publish();
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
@@ -211,8 +211,8 @@ int main(int argc, char **argv){
             tx_wheels.FRAME.header.type = FRAME_TO_WHEELS;
             tx_wheels.FRAME.header.ctrl = sub_ctrl.msg.data;
 
-            tx_wheels.FRAME.wheels_left = sub_wheels.msg.wheels_left;
-            tx_wheels.FRAME.wheels_right = sub_wheels.msg.wheels_right;
+            tx_wheels.FRAME.wheels_left = conv::wheel_sig.ToTx(sub_wheels.msg.wheels_left);
+            tx_wheels.FRAME.wheels_right = conv::wheel_sig.ToTx(sub_wheels.msg.wheels_right);
 
             tx_wheels.EncodeBuffor();
 
@@ -224,12 +224,12 @@ int main(int argc, char **argv){
             tx_arm.FRAME.header.type = FRAME_TO_ARM;
             tx_arm.FRAME.header.ctrl = sub_ctrl.msg.data;
 
-            tx_arm.FRAME.link_0 = sub_arm.msg.link_0;
-            tx_arm.FRAME.link_1 = sub_arm.msg.link_1;
-            tx_arm.FRAME.link_2 = sub_arm.msg.link_2;
-            tx_arm.FRAME.link_3 = sub_arm.msg.link_3;
-            tx_arm.FRAME.link_4 = sub_arm.msg.link_4;
-            tx_arm.FRAME.grip = sub_arm.msg.grip;
+            tx_arm.FRAME.link_0 = conv::link0_sig.ToTx(sub_arm.msg.link_0);
+            tx_arm.FRAME.link_1 = conv::link1_sig.ToTx(sub_arm.msg.link_1);
+            tx_arm.FRAME.link_2 = conv::link2_sig.ToTx(sub_arm.msg.link_2);
+            tx_arm.FRAME.link_3 = conv::link3_sig.ToTx(sub_arm.msg.link_3);
+            tx_arm.FRAME.link_4 = conv::link4_sig.ToTx(sub_arm.msg.link_4);
+            tx_arm.FRAME.grip = conv::grip_sig.ToTx(sub_arm.msg.grip);
 
             tx_arm.EncodeBuffor();
 
@@ -251,8 +251,8 @@ int main(int argc, char **argv){
             loop_rate.sleep();
         }else{
             synchro_rate.sleep();
-        }
-    }
+        };
+    };
 
     return 0;
-}
+};

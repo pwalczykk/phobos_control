@@ -2,8 +2,8 @@
 #define SUBENCODERS_HPP_
 
 #include <std_msgs/Int16.h>
-#include <phobos_shared/TeleopWheels.h>
-#include <phobos_shared/TeleopArm.h>
+#include <phobos_shared/TeleopWheelsFloat.h>
+#include <phobos_shared/TeleopArmFloat.h>
 
 template <typename ros_Message>
 class SubTeleop{
