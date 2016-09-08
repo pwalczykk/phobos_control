@@ -1,0 +1,18 @@
+<launch>
+    <!-- COMMUNICATION -->
+    <node name="uart_433_control_transceiver" pkg="phobos_control_station" type="uart_433_control_transceiver" ns="/control"/>
+
+    <!-- TELEOPERATION -->
+    <node name="keyboard" pkg="keyboard" type="keyboard" ns="/control"/>
+
+    <!-- VISUALIZATION -->
+    <node name="rviz" type="rviz" pkg="rviz"/>
+    <node name="pub_traveled_path" pkg="phobos_control_station" type="pub_traveled_path" ns="/control"/>
+    <node name="robot_pose_publisher" pkg="phobos_control_station" type="robot_pose_publisher" ns="/control"/>
+
+    <!-- SECURITY -->
+    <!-- <node name="error_encoder" pkg="phobos_control_station" type="error_encoder" ns="/control"/> -->
+
+    <!-- TODO : Wiktors manip operation -->
+
+</launch>
