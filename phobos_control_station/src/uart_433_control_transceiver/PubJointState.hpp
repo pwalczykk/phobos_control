@@ -34,6 +34,8 @@ public:
     // }
 
     void Publish(){
+        msg_js.header.seq++;
+        msg_js.header.stamp = ros::Time::now();
         pub_js.publish(msg_js);
     }
 };

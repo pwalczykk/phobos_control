@@ -11,8 +11,14 @@
     </node>
 
 
+
+    <!-- <node name="joy" pkg="joy" type="joy_node" output="screen">
+        <param name="~dev" value="/dev/input/js1"/>
+        <remap from="/joy" to="/control/joystick/joy"/>
+    </node> -->
+
     <node name="joy" pkg="joy" type="joy_node" output="screen">
-        <param name="~dev" value="/dev/input/js0"/>
+        <param name="~dev" value="/dev/input/js1"/>
     </node>
 
     <node
@@ -31,6 +37,5 @@
 
     <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>
 
-    <node name="control_messages_interface" pkg="phobos_control_manipulator" type="control_messages_interface"></node>
 
 </launch>

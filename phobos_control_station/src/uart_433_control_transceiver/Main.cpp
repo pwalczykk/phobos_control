@@ -59,23 +59,23 @@ int main(int argc, char **argv){
     PubPoseOrient pub_pose_orient(&nh, "/control/localization/pose_ekf");
     PubEncodersAll pub_encoders_all(&nh, "/control/encoders/all");
     PubJointState pub_joint_state(&nh, "/control/encoders/joint_state");
-        pub_joint_state.Add("link_0_joint");
-        pub_joint_state.Add("link_1_joint");
-        pub_joint_state.Add("link_2_joint");
-        pub_joint_state.Add("link_3_joint");
-        pub_joint_state.Add("link_4_joint");
-        pub_joint_state.Add("finger_l_joint");
-        pub_joint_state.Add("finger_r_joint");
-        pub_joint_state.Add("rocker_l_bearing_joint");
-        pub_joint_state.Add("rocker_r_bearing_joint");
-        pub_joint_state.Add("bogie_l_bearing_joint");
-        pub_joint_state.Add("bogie_r_bearing_joint");
-        pub_joint_state.Add("wheel_bl_joint");
-        pub_joint_state.Add("wheel_ml_joint");
-        pub_joint_state.Add("wheel_fl_joint");
-        pub_joint_state.Add("wheel_br_joint");
-        pub_joint_state.Add("wheel_mr_joint");
-        pub_joint_state.Add("wheel_fr_joint");
+        pub_joint_state.Add("wheel_fl_joint");          //0
+        pub_joint_state.Add("wheel_fr_joint");          //1
+        pub_joint_state.Add("wheel_ml_joint");          //2
+        pub_joint_state.Add("wheel_mr_joint");          //3
+        pub_joint_state.Add("wheel_bl_joint");          //4
+        pub_joint_state.Add("wheel_br_joint");          //5
+        pub_joint_state.Add("link_0_joint");            //6
+        pub_joint_state.Add("link_1_joint");            //7
+        pub_joint_state.Add("link_2_joint");            //8
+        pub_joint_state.Add("link_3_joint");            //9
+        pub_joint_state.Add("link_4_joint");            //10
+        pub_joint_state.Add("finger_l_joint");          //11
+        pub_joint_state.Add("finger_r_joint");          //12
+        pub_joint_state.Add("rocker_l_bearing_joint");  //13
+        pub_joint_state.Add("rocker_r_bearing_joint");  //14
+        pub_joint_state.Add("bogie_l_bearing_joint");   //15
+        pub_joint_state.Add("bogie_r_bearing_joint");   //16
 
     int UART_SYNCHRO = 0;
     int ERROR_COUNTER = 0;
@@ -144,6 +144,15 @@ int main(int argc, char **argv){
                         pub_encoders_all.msg.wheel_vel_br = conv::wheel_enc.FromRx(rx_wheels.FRAME.wheel_vel_br);
                         pub_encoders_all.Publish();
 
+                        pub_joint_state.msg_js.position[0] = pub_encoders_all.msg.wheel_vel_fl;
+                        pub_joint_state.msg_js.position[1] = pub_encoders_all.msg.wheel_vel_fr;
+                        pub_joint_state.msg_js.position[2] = pub_encoders_all.msg.wheel_vel_ml;
+                        pub_joint_state.msg_js.position[3] = pub_encoders_all.msg.wheel_vel_mr;
+                        pub_joint_state.msg_js.position[4] = pub_encoders_all.msg.wheel_vel_bl;
+                        pub_joint_state.msg_js.position[5] = pub_encoders_all.msg.wheel_vel_br;
+                        pub_joint_state.Publish();
+
+
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
                     }
                     break;
@@ -166,6 +175,17 @@ int main(int argc, char **argv){
                         pub_encoders_all.msg.grip_pose = conv::grip_enc.FromRx(rx_arm.FRAME.grip_pose);
                         pub_encoders_all.Publish();
 
+                        pub_joint_state.msg_js.position[6] = pub_encoders_all.msg.link_pose_0;
+                        pub_joint_state.msg_js.position[7] = pub_encoders_all.msg.link_pose_1;
+                        pub_joint_state.msg_js.position[8] = pub_encoders_all.msg.link_pose_2;
+                        pub_joint_state.msg_js.position[9] = pub_encoders_all.msg.link_pose_3;
+                        pub_joint_state.msg_js.position[10] = pub_encoders_all.msg.link_pose_4;
+                        pub_joint_state.msg_js.position[11] = pub_encoders_all.msg.grip_pose;
+                        pub_joint_state.msg_js.position[12] = pub_encoders_all.msg.grip_pose;
+
+                        pub_joint_state.Publish();
+
+
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
                     }
                     break;
@@ -185,6 +205,13 @@ int main(int argc, char **argv){
                         pub_encoders_all.msg.bogie_pose_l = conv::bogie_enc.FromRx(rx_susp.FRAME.bogie_pose_l);
                         pub_encoders_all.msg.bogie_pose_r = conv::bogie_enc.FromRx(rx_susp.FRAME.bogie_pose_r);
                         pub_encoders_all.Publish();
+
+                        pub_joint_state.msg_js.position[13] = pub_encoders_all.msg.rocker_pose_l;
+                        pub_joint_state.msg_js.position[14] = pub_encoders_all.msg.rocker_pose_r;
+                        pub_joint_state.msg_js.position[15] = pub_encoders_all.msg.bogie_pose_l;
+                        pub_joint_state.msg_js.position[16] = pub_encoders_all.msg.bogie_pose_r;
+                        pub_joint_state.Publish();
+
 
                         UART_SYNCHRO = 1; ERROR_COUNTER = 0;
                     }

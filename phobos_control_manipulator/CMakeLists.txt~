@@ -14,7 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
 generate_dynamic_reconfigure_options(
   cfg/ManipParameters.cfg
   cfg/WheelsParam.cfg
-  cfg/ControlMsgs.cfg
 )
 
 include_directories(${catkin_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS})

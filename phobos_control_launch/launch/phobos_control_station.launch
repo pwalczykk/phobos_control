@@ -1,18 +1,56 @@
 <launch>
     <!-- COMMUNICATION -->
-    <node name="uart_433_control_transceiver" pkg="phobos_control_station" type="uart_433_control_transceiver" ns="/control"/>
+    <node name="uart_433_control_transceiver" pkg="phobos_control_station" type="uart_433_control_transceiver" ns="/control" respawn="true"/>
 
     <!-- TELEOPERATION -->
-    <node name="keyboard" pkg="keyboard" type="keyboard" ns="/control"/>
+    <node
+        name="keyboard"
+        pkg="keyboard"
+        type="keyboard"
+        ns="/control"
+    >
+        <remap from="/control/keyup" to="control/keyboard/keyup"/>
+        <remap from="/control/keydown" to="control/keyboard/keydown"/>
+    </node>
+
+    <node name="joy" pkg="joy" type="joy_node" output="screen">
+        <param name="~dev" value="/dev/input/js1"/>
+        <remap from="/joy" to="/control/joystick/joy"/>
+    </node>
+
+    <node
+        name="reverse_kinematics"
+        pkg="phobos_control_manipulator"
+        type="reverse_kinematics"
+    ></node>
+
+    <node name="manip_operation" pkg="phobos_control_manipulator" type="manip_operation" >
+        <remap from="/control/joystick/joy" to="/joy"/>
+    </node>
+
+    <node name="wheel_control" pkg="phobos_control_manipulator" type="wheel_control">
+        <remap from="/control/joystick/joy" to="/joy"/>
+    </node>
+
+    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>
+
+    <node name="control_messages_interface" pkg="phobos_control_manipulator" type="control_messages_interface"></node>
 
     <!-- VISUALIZATION -->
+    <param name="robot_description" command="$(find xacro)/xacro.py $(find phobos_simulation)/xacro/rover.xacro --inorder" />
     <node name="rviz" type="rviz" pkg="rviz"/>
     <node name="pub_traveled_path" pkg="phobos_control_station" type="pub_traveled_path" ns="/control"/>
-    <node name="robot_pose_publisher" pkg="phobos_control_station" type="robot_pose_publisher" ns="/control"/>
+
+    <node name="robot_pose_publisher" pkg="phobos_control_station" type="robot_pose_publisher" ns="/control">
+        <param name="parent_link" value="/odom"/>
+        <param name="child_link" value="/base_link"/>
+    </node>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="/control">
+        <remap from="/control/joint_states" to="/control/encoders/joint_state"/>
+    </node>
 
     <!-- SECURITY -->
     <!-- <node name="error_encoder" pkg="phobos_control_station" type="error_encoder" ns="/control"/> -->
-
-    <!-- TODO : Wiktors manip operation -->
 
 </launch>
