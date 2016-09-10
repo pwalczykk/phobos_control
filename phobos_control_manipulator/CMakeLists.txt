@@ -57,8 +57,8 @@ add_dependencies( wheel_control ${phobos_manip_operation}_gencfg)
 
 add_executable(control_messages_interface
 	src/control_messages_interface/src/Main.cpp
-	src/control_messages_interface/src/PublisherInt8.cpp
+	src/control_messages_interface/src/PublisherInt16.cpp
 	)
-	
+
 target_link_libraries(control_messages_interface ${catkin_LIBRARIES})
 add_dependencies( control_messages_interface ${control_messages_interface}_gencfg)
