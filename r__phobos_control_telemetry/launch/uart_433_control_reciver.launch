@@ -1,3 +1,0 @@
-<launch>
-    <node name="uart_433_control_reciver" pkg="phobos_control_telemetry" type="uart_433_control_reciver" output="screen" respawn="true"/>
-</launch>

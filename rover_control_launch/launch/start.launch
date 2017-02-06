@@ -1,4 +1,0 @@
-<launch>
-    <include file="radio433teleop_uart.launch"/>
-    <!-- <include file="rviz_teleop.launch"/> -->
-</launch>

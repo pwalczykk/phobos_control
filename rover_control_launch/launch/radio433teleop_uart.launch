@@ -1,6 +1,0 @@
-<launch>
-    <node name="uart_433_control_transmiter" pkg="rover_teleop" type="uart_433_control_transmiter" output="screen" />
-    <node name="uart_433_control_reciver" pkg="rover_teleop" type="uart_433_control_reciver" output="screen" />
-
-    <node name="keyboard" pkg="keyboard" type="keyboard"/>
-</launch>
